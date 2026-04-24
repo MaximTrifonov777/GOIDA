@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация — Торжище</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<header>
+    <nav class="nav">
+        <div class="nav_logo">Торжище</div>
+        <ul class="nav_menu">
+            <li><a href="goods.html">Товары</a></li>
+            <li><a href="about.html">О нас</a></li>
+            <li><a href="register.html">Регистрация</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div class="form_block">
+        <h2>Запись в гильдию</h2>
+        <form id="regForm">
+            <label>ФИО</label>
+            <input type="text" id="fullName" placeholder="Иван сын Петров" required>
+            
+            <label>Номер телефона</label>
+            <input type="tel" id="phone" placeholder="+7..." required>
+            
+            <button type="submit">Записаться</button>
+        </form>
+        <p id="msg" class="msg"></p>
+    </div>
+</main>
+
+<footer>
+    <p>Торжище открыто от зари до заката. Торгуй с честью.</p>
+</footer>
+
+<script>
+    document.getElementById('regForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        var name = document.getElementById('fullName').value.trim();
+        var phone = document.getElementById('phone').value.trim();
+        var msg = document.getElementById('msg');
+        
+        if (!name || !phone) {
+            msg.style.color = '#8b1a1a';
+            msg.textContent = 'Заполни оба поля.';
+            return;
+        }
+        
+        var user = {
+            fullName: name,
+            phone: phone,
+            status: 'Крестьянин',
+            goodsUploaded: 0,
+            purchases: 0
+        };
+        
+        localStorage.setItem('torzhishche_user', JSON.stringify(user));
+        
+        msg.style.color = '#2d5a1e';
+        msg.textContent = 'Записан. Статус: Крестьянин.';
+        
+        setTimeout(function() {
+            window.location.href = 'user.html';
+        }, 1500);
+    });
+</script>
+
+</body>
+</html>
