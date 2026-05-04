@@ -1,0 +1,108 @@
+.goods_section h2 {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 1.6rem;
+    color: #4f3113;
+    border-bottom: 2px solid #8b5e34;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.goods_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.good_card {
+    background: #ecdbba;
+    border: 2px solid #5c4022;
+    padding: 12px;
+}
+
+.good_card h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.good_badge {
+    font-size: 12px;
+    background: #5c4022;
+    color: #e8cf9e;
+    padding: 2px 8px;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.good_card p {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.good_price {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.good_btn {
+    background: #50381c;
+    border: 1px solid #ad8a4a;
+    color: #f0dba8;
+    padding: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.good_btn:hover {
+    background: #6b4a28;
+}
+
+.form_block {
+    background: #ecdbba;
+    border: 2px solid #5c4022;
+    padding: 20px 24px;
+    max-width: 100%;
+    margin: 18px 0;
+}
+
+.form_block h2 {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 22px;
+    color: #4f3113;
+    margin-bottom: 12px;
+}
+
+.form_block input {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #5c4022;
+    background: #f7ecd5;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: #3d2b14;
+    box-sizing: border-box;
+}
+
+.form_block button {
+    background: #50381c;
+    border: 1px solid #ad8a4a;
+    color: #f0dba8;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    font-family: 'MedievalSharp', cursive;
+}
+
+.form_block button:hover {
+    background: #6b4a28;
+}
+
+.msg {
+    margin-top: 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    text-align: center;
+}

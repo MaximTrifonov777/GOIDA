@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Торжище</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="site.css">
 </head>
 <body>
@@ -31,12 +34,20 @@
         <a href="goods.html?cat=weapons" class="cat_card">Оружие</a>
     </section>
 
-    <section class="goods_grid">
+    <div class="goods_grid">
         <div class="good_card">
             <h3>Копчёный окорок</h3>
             <span class="good_badge">Провизия</span>
             <p>Свиной окорок, копчённый на ольховой щепе.</p>
             <div class="good_price">7 серебряных</div>
+            <button class="good_btn">В корзину</button>
+        </div>
+
+        <div class="good_card">
+            <h3>Ржаной хлеб</h3>
+            <span class="good_badge">Провизия</span>
+            <p>Буханка из печи, хрустящая корочка.</p>
+            <div class="good_price">3 медяка</div>
             <button class="good_btn">В корзину</button>
         </div>
 
@@ -49,21 +60,29 @@
         </div>
 
         <div class="good_card">
-            <h3>Кинжал</h3>
-            <span class="good_badge">Оружие</span>
-            <p>Узкий клинок, прячется в рукаве.</p>
-            <div class="good_price">18 золотых</div>
-            <button class="good_btn">В корзину</button>
-        </div>
-
-        <div class="good_card">
             <h3>Гусли звонкие</h3>
             <span class="good_badge">Инструменты</span>
             <p>Девять струн, корпус из клёна.</p>
             <div class="good_price">14 золотых</div>
             <button class="good_btn">В корзину</button>
         </div>
-    </section>
+
+        <div class="good_card">
+            <h3>Кинжал узкий</h3>
+            <span class="good_badge">Оружие</span>
+            <p>Прячется в рукаве, бьёт без промаха.</p>
+            <div class="good_price">18 золотых</div>
+            <button class="good_btn">В корзину</button>
+        </div>
+
+        <div class="good_card">
+            <h3>Меч короткий</h3>
+            <span class="good_badge">Оружие</span>
+            <p>Закалённая сталь, не подведёт.</p>
+            <div class="good_price">25 золотых</div>
+            <button class="good_btn">В корзину</button>
+        </div>
+    </div>
 </main>
 
 <footer>

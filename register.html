@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="register.css">
 </head>
 <body>
 
@@ -28,10 +29,10 @@
         <form id="regForm">
             <label>ФИО</label>
             <input type="text" id="fullName" placeholder="Иван сын Петров" required>
-            
+
             <label>Номер телефона</label>
             <input type="tel" id="phone" placeholder="+7..." required>
-            
+
             <button type="submit">Записаться</button>
         </form>
         <p id="msg" class="msg"></p>
@@ -45,17 +46,17 @@
 <script>
     document.getElementById('regForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        
+
         var name = document.getElementById('fullName').value.trim();
         var phone = document.getElementById('phone').value.trim();
         var msg = document.getElementById('msg');
-        
+
         if (!name || !phone) {
             msg.style.color = '#8b1a1a';
             msg.textContent = 'Заполни оба поля.';
             return;
         }
-        
+
         var user = {
             fullName: name,
             phone: phone,
@@ -63,12 +64,12 @@
             goodsUploaded: 0,
             purchases: 0
         };
-        
+
         localStorage.setItem('torzhishche_user', JSON.stringify(user));
-        
+
         msg.style.color = '#2d5a1e';
         msg.textContent = 'Записан. Статус: Крестьянин.';
-        
+
         setTimeout(function() {
             window.location.href = 'user.html';
         }, 1500);

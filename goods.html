@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="goods.css">
 </head>
 <body>
 
@@ -24,41 +25,83 @@
 
 <main>
     <section class="goods_section">
-        <h2 style="font-family: 'MedievalSharp', cursive; font-size: 1.6rem; color: #4f3113; border-bottom: 2px solid #8b5e34; padding-bottom: 5px; margin-bottom: 15px;">Провизия</h2>
-        <div class="goods_grid" id="provisions_grid"></div>
-        <div class="form_block" style="max-width: 100%; margin: 18px 0;">
-            <h2>Добавить товар</h2>
-            <input type="text" id="prov_name" placeholder="Название" style="margin-bottom: 8px;">
-            <input type="text" id="prov_desc" placeholder="Описание" style="margin-bottom: 8px;">
-            <input type="text" id="prov_price" placeholder="Цена" style="margin-bottom: 8px;">
-            <button onclick="addGood('provisions')">Добавить</button>
-            <p id="prov_msg" class="msg"></p>
+        <h2>Провизия</h2>
+        <div class="goods_grid">
+            <div class="good_card">
+                <h3>Копчёный окорок</h3>
+                <span class="good_badge">Провизия</span>
+                <p>Свиной окорок, копчённый на ольховой щепе.</p>
+                <div class="good_price">7 серебряных</div>
+                <button class="good_btn">В корзину</button>
+            </div>
+            <div class="good_card">
+                <h3>Ржаной хлеб</h3>
+                <span class="good_badge">Провизия</span>
+                <p>Буханка из печи, хрустящая корочка.</p>
+                <div class="good_price">3 медяка</div>
+                <button class="good_btn">В корзину</button>
+            </div>
+            <div class="good_card">
+                <h3>Сыр выдержанный</h3>
+                <span class="good_badge">Провизия</span>
+                <p>Голова сыра из монастырских погребов.</p>
+                <div class="good_price">4 серебряных</div>
+                <button class="good_btn">В корзину</button>
+            </div>
         </div>
     </section>
 
     <section class="goods_section">
-        <h2 style="font-family: 'MedievalSharp', cursive; font-size: 1.6rem; color: #4f3113; border-bottom: 2px solid #8b5e34; padding-bottom: 5px; margin-bottom: 15px;">Инструменты</h2>
-        <div class="goods_grid" id="tools_grid"></div>
-        <div class="form_block" style="max-width: 100%; margin: 18px 0;">
-            <h2>Добавить товар</h2>
-            <input type="text" id="tool_name" placeholder="Название" style="margin-bottom: 8px;">
-            <input type="text" id="tool_desc" placeholder="Описание" style="margin-bottom: 8px;">
-            <input type="text" id="tool_price" placeholder="Цена" style="margin-bottom: 8px;">
-            <button onclick="addGood('tools')">Добавить</button>
-            <p id="tool_msg" class="msg"></p>
+        <h2>Инструменты</h2>
+        <div class="goods_grid">
+            <div class="good_card">
+                <h3>Топор плотника</h3>
+                <span class="good_badge">Инструменты</span>
+                <p>Лезвие из доброй стали, топорище ясеневое.</p>
+                <div class="good_price">10 золотых</div>
+                <button class="good_btn">В корзину</button>
+            </div>
+            <div class="good_card">
+                <h3>Гусли звонкие</h3>
+                <span class="good_badge">Инструменты</span>
+                <p>Девять струн, корпус из клёна.</p>
+                <div class="good_price">14 золотых</div>
+                <button class="good_btn">В корзину</button>
+            </div>
+            <div class="good_card">
+                <h3>Наковальня малая</h3>
+                <span class="good_badge">Инструменты</span>
+                <p>Походная, для правки клинков.</p>
+                <div class="good_price">22 золотых</div>
+                <button class="good_btn">В корзину</button>
+            </div>
         </div>
     </section>
 
     <section class="goods_section">
-        <h2 style="font-family: 'MedievalSharp', cursive; font-size: 1.6rem; color: #4f3113; border-bottom: 2px solid #8b5e34; padding-bottom: 5px; margin-bottom: 15px;">Оружие</h2>
-        <div class="goods_grid" id="weapons_grid"></div>
-        <div class="form_block" style="max-width: 100%; margin: 18px 0;">
-            <h2>Добавить товар</h2>
-            <input type="text" id="weap_name" placeholder="Название" style="margin-bottom: 8px;">
-            <input type="text" id="weap_desc" placeholder="Описание" style="margin-bottom: 8px;">
-            <input type="text" id="weap_price" placeholder="Цена" style="margin-bottom: 8px;">
-            <button onclick="addGood('weapons')">Добавить</button>
-            <p id="weap_msg" class="msg"></p>
+        <h2>Оружие</h2>
+        <div class="goods_grid">
+            <div class="good_card">
+                <h3>Кинжал узкий</h3>
+                <span class="good_badge">Оружие</span>
+                <p>Прячется в рукаве, бьёт без промаха.</p>
+                <div class="good_price">18 золотых</div>
+                <button class="good_btn">В корзину</button>
+            </div>
+            <div class="good_card">
+                <h3>Меч короткий</h3>
+                <span class="good_badge">Оружие</span>
+                <p>Закалённая сталь, не подведёт.</p>
+                <div class="good_price">25 золотых</div>
+                <button class="good_btn">В корзину</button>
+            </div>
+            <div class="good_card">
+                <h3>Лук тисовый</h3>
+                <span class="good_badge">Оружие</span>
+                <p>Бьёт на сто шагов, тетива пеньковая.</p>
+                <div class="good_price">15 золотых</div>
+                <button class="good_btn">В корзину</button>
+            </div>
         </div>
     </section>
 </main>
@@ -66,111 +109,6 @@
 <footer>
     <p>Торжище открыто от зари до заката. Торгуй с честью.</p>
 </footer>
-
-<script>
-    var defaultGoods = {
-        provisions: [
-            { name: 'Копчёный окорок', desc: 'Свиной окорок на ольховой щепе.', price: '7 серебряных' },
-            { name: 'Ржаной хлеб', desc: 'Буханка из печи, хрустящая корочка.', price: '3 медяка' },
-            { name: 'Сыр выдержанный', desc: 'Голова сыра из монастырских погребов.', price: '4 серебряных' }
-        ],
-        tools: [
-            { name: 'Топор плотника', desc: 'Лезвие доброй стали, топорище ясеневое.', price: '10 золотых' },
-            { name: 'Гусли звонкие', desc: 'Девять струн, корпус из клёна.', price: '14 золотых' },
-            { name: 'Наковальня малая', desc: 'Походная, для правки клинков.', price: '22 золотых' }
-        ],
-        weapons: [
-            { name: 'Кинжал узкий', desc: 'Прячется в рукаве, бьёт без промаха.', price: '18 золотых' },
-            { name: 'Меч короткий', desc: 'Закалённая сталь, не подведёт.', price: '25 золотых' },
-            { name: 'Лук тисовый', desc: 'Бьёт на сто шагов, тетива пеньковая.', price: '15 золотых' }
-        ]
-    };
-
-    var saved = localStorage.getItem('torzhishche_goods');
-    var allGoods;
-
-    if (saved) {
-        allGoods = JSON.parse(saved);
-    } else {
-        allGoods = defaultGoods;
-        localStorage.setItem('torzhishche_goods', JSON.stringify(allGoods));
-    }
-
-    function saveGoods() {
-        localStorage.setItem('torzhishche_goods', JSON.stringify(allGoods));
-    }
-
-    function renderGoods() {
-        renderCategory('provisions', 'provisions_grid');
-        renderCategory('tools', 'tools_grid');
-        renderCategory('weapons', 'weapons_grid');
-    }
-
-    function renderCategory(cat, gridId) {
-        var grid = document.getElementById(gridId);
-        grid.innerHTML = '';
-        var items = allGoods[cat] || [];
-        items.forEach(function(item, index) {
-            var card = document.createElement('div');
-            card.className = 'good_card';
-            card.innerHTML = 
-                '<h3>' + item.name + '</h3>' +
-                '<span class="good_badge">' + catLabels[cat] + '</span>' +
-                '<p>' + item.desc + '</p>' +
-                '<div class="good_price">' + item.price + '</div>' +
-                '<button class="good_btn" onclick="removeGood(\'' + cat + '\', ' + index + ')">Закончился</button>';
-            grid.appendChild(card);
-        });
-    }
-
-    var catLabels = { provisions: 'Провизия', tools: 'Инструменты', weapons: 'Оружие' };
-
-    function addGood(cat) {
-        var prefix = cat.slice(0,4);
-        var name = document.getElementById(prefix + '_name').value.trim();
-        var desc = document.getElementById(prefix + '_desc').value.trim();
-        var price = document.getElementById(prefix + '_price').value.trim();
-        var msg = document.getElementById(prefix + '_msg');
-
-        if (!name || !desc || !price) {
-            msg.style.color = '#8b1a1a';
-            msg.textContent = 'Заполни все поля.';
-            return;
-        }
-
-        var user = JSON.parse(localStorage.getItem('torzhishche_user'));
-        if (!user) {
-            msg.style.color = '#8b1a1a';
-            msg.textContent = 'Сперва запишись в гильдию.';
-            return;
-        }
-
-        allGoods[cat].push({ name: name, desc: desc, price: price });
-        saveGoods();
-
-        if (user.status === 'Крестьянин') {
-            user.status = 'Ремесленник';
-        }
-        user.goodsUploaded = (user.goodsUploaded || 0) + 1;
-        localStorage.setItem('torzhishche_user', JSON.stringify(user));
-
-        document.getElementById(prefix + '_name').value = '';
-        document.getElementById(prefix + '_desc').value = '';
-        document.getElementById(prefix + '_price').value = '';
-
-        msg.style.color = '#2d5a1e';
-        msg.textContent = 'Товар добавлен. Статус: ' + user.status + '.';
-        renderGoods();
-    }
-
-    function removeGood(cat, index) {
-        allGoods[cat].splice(index, 1);
-        saveGoods();
-        renderGoods();
-    }
-
-    renderGoods();
-</script>
 
 </body>
 </html>

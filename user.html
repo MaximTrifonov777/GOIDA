@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль — Торжище</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="user.css">
+</head>
+<body>
+
+<header>
+    <nav class="nav">
+        <div class="nav_logo">Торжище</div>
+        <ul class="nav_menu">
+            <li><a href="goods.html">Товары</a></li>
+            <li><a href="about.html">О нас</a></li>
+            <li><a href="register.html">Регистрация</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div class="user_profile" id="userProfile"></div>
+
+    <div class="form_block user_goods_section">
+        <h2>Выставить товар на торг</h2>
+        <input type="text" id="new_good_name" placeholder="Название товара">
+        <input type="text" id="new_good_desc" placeholder="Описание">
+        <input type="text" id="new_good_price" placeholder="Цена">
+        <select id="new_good_cat">
+            <option value="provisions">Провизия</option>
+            <option value="tools">Инструменты</option>
+            <option value="weapons">Оружие</option>
+        </select>
+        <button onclick="addUserGood()">Выставить</button>
+        <p id="user_msg" class="msg"></p>
+    </div>
+
+    <section class="user_goods_section" id="userGoodsSection">
+        <h2>Мои товары</h2>
+        <div class="user_goods_grid" id="userGoodsGrid"></div>
+    </section>
+</main>
+
+<footer>
+    <p>Торжище открыто от зари до заката. Торгуй с честью.</p>
+</footer>
+
+<script>
+    var catLabels = { provisions: 'Провизия', tools: 'Инструменты', weapons: 'Оружие' };
+
+    function loadUser() {
+        var user = JSON.parse(localStorage.getItem('torzhishche_user'));
+        var profileDiv = document.getElementById('userProfile');
+        if (!user) {
+            profileDiv.innerHTML = '<p>Ты не записан в гильдию. <a href="register.html">Запишись</a>.</p>';
+            return null;
+        }
+        profileDiv.innerHTML =
+            '<h2>Грамота гильдии</h2>' +
+            '<p><strong>Имя:</strong> ' + user.fullName + '</p>' +
+            '<p><strong>Статус:</strong> ' + user.status + '</p>' +
+            '<p><strong>Товаров загружено:</strong> ' + (user.goodsUploaded || 0) + '</p>';
+        return user;
+    }
+
+    function renderUserGoods() {
+        var saved = localStorage.getItem('torzhishche_goods');
+        var allGoods = saved ? JSON.parse(saved) : { provisions: [], tools: [], weapons: [] };
+        var grid = document.getElementById('userGoodsGrid');
+        grid.innerHTML = '';
+
+        for (var cat in allGoods) {
+            var items = allGoods[cat];
+            items.forEach(function(item, index) {
+                var card = document.createElement('div');
+                card.className = 'good_card';
+                var isAvailable = item.available !== false;
+                var availabilityText = isAvailable ? 'В наличии' : 'Отсутствует';
+                var availabilityColor = isAvailable ? '#2d5a1e' : '#8b1a1a';
+                var btnText = isAvailable ? 'Снять с торга' : 'Вернуть на торг';
+                card.innerHTML =
+                    '<h3>' + item.name + '</h3>' +
+                    '<span class="good_badge">' + catLabels[cat] + '</span>' +
+                    '<p>' + item.desc + '</p>' +
+                    '<div class="good_price">' + item.price + '</div>' +
+                    '<p style="font-size:12px; color:' + availabilityColor + '; margin-bottom:5px;">' + availabilityText + '</p>' +
+                    '<button class="good_btn" onclick="toggleUserGood(\'' + cat + '\', ' + index + ')">' + btnText + '</button>';
+                grid.appendChild(card);
+            });
+        }
+    }
+
+    function addUserGood() {
+        var name = document.getElementById('new_good_name').value.trim();
+        var desc = document.getElementById('new_good_desc').value.trim();
+        var price = document.getElementById('new_good_price').value.trim();
+        var cat = document.getElementById('new_good_cat').value;
+        var msg = document.getElementById('user_msg');
+
+        if (!name || !desc || !price) {
+            msg.style.color = '#8b1a1a';
+            msg.textContent = 'Заполни все поля.';
+            return;
+        }
+
+        var user = JSON.parse(localStorage.getItem('torzhishche_user'));
+        if (!user) {
+            msg.style.color = '#8b1a1a';
+            msg.textContent = 'Сперва запишись в гильдию.';
+            return;
+        }
+
+        var saved = localStorage.getItem('torzhishche_goods');
+        var allGoods = saved ? JSON.parse(saved) : { provisions: [], tools: [], weapons: [] };
+
+        allGoods[cat].push({ name: name, desc: desc, price: price, available: true });
+        localStorage.setItem('torzhishche_goods', JSON.stringify(allGoods));
+
+        if (user.status === 'Крестьянин') {
+            user.status = 'Ремесленник';
+        }
+        user.goodsUploaded = (user.goodsUploaded || 0) + 1;
+        localStorage.setItem('torzhishche_user', JSON.stringify(user));
+
+        document.getElementById('new_good_name').value = '';
+        document.getElementById('new_good_desc').value = '';
+        document.getElementById('new_good_price').value = '';
+
+        msg.style.color = '#2d5a1e';
+        msg.textContent = 'Товар выставлен. Статус: ' + user.status + '.';
+
+        loadUser();
+        renderUserGoods();
+    }
+
+    function toggleUserGood(cat, index) {
+        var saved = localStorage.getItem('torzhishche_goods');
+        var allGoods = saved ? JSON.parse(saved) : { provisions: [], tools: [], weapons: [] };
+        allGoods[cat][index].available = !allGoods[cat][index].available;
+        localStorage.setItem('torzhishche_goods', JSON.stringify(allGoods));
+        renderUserGoods();
+    }
+
+    loadUser();
+    renderUserGoods();
+</script>
+
+</body>
+</html>
