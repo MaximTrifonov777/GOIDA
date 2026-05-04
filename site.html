@@ -8,6 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="site.css">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
 
@@ -22,72 +25,13 @@
     </nav>
 </header>
 
-<main>
-    <section class="banner">
-        <h1>Добро пожаловать на Торжище</h1>
-        <p>Здесь крестьянин становится ремесленником, а медяк — золотым</p>
-    </section>
-
-    <section class="categories">
-        <a href="goods.html?cat=provisions" class="cat_card">Провизия</a>
-        <a href="goods.html?cat=tools" class="cat_card">Инструменты</a>
-        <a href="goods.html?cat=weapons" class="cat_card">Оружие</a>
-    </section>
-
-    <div class="goods_grid">
-        <div class="good_card">
-            <h3>Копчёный окорок</h3>
-            <span class="good_badge">Провизия</span>
-            <p>Свиной окорок, копчённый на ольховой щепе.</p>
-            <div class="good_price">7 серебряных</div>
-            <button class="good_btn">В корзину</button>
-        </div>
-
-        <div class="good_card">
-            <h3>Ржаной хлеб</h3>
-            <span class="good_badge">Провизия</span>
-            <p>Буханка из печи, хрустящая корочка.</p>
-            <div class="good_price">3 медяка</div>
-            <button class="good_btn">В корзину</button>
-        </div>
-
-        <div class="good_card">
-            <h3>Топор плотника</h3>
-            <span class="good_badge">Инструменты</span>
-            <p>Лезвие из доброй стали, топорище ясеневое.</p>
-            <div class="good_price">10 золотых</div>
-            <button class="good_btn">В корзину</button>
-        </div>
-
-        <div class="good_card">
-            <h3>Гусли звонкие</h3>
-            <span class="good_badge">Инструменты</span>
-            <p>Девять струн, корпус из клёна.</p>
-            <div class="good_price">14 золотых</div>
-            <button class="good_btn">В корзину</button>
-        </div>
-
-        <div class="good_card">
-            <h3>Кинжал узкий</h3>
-            <span class="good_badge">Оружие</span>
-            <p>Прячется в рукаве, бьёт без промаха.</p>
-            <div class="good_price">18 золотых</div>
-            <button class="good_btn">В корзину</button>
-        </div>
-
-        <div class="good_card">
-            <h3>Меч короткий</h3>
-            <span class="good_badge">Оружие</span>
-            <p>Закалённая сталь, не подведёт.</p>
-            <div class="good_price">25 золотых</div>
-            <button class="good_btn">В корзину</button>
-        </div>
-    </div>
-</main>
+<main id="root"></main>
 
 <footer>
     <p>Торжище открыто от зари до заката. Торгуй с честью.</p>
 </footer>
+
+<script type="text/babel" src="app.jsx"></script>
 
 </body>
 </html>

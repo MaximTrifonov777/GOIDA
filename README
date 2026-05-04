@@ -1,0 +1,38 @@
+# Торжище
+
+Средневековая ярмарка — веб-приложение для торговли товарами.
+
+## Ссылки
+
+- Техническое задание: в репозитории
+- ER-диаграмма: в репозитории
+- Макеты Figma: в репозитории
+
+## Архитектура
+
+Клиент-серверное приложение.
+- Frontend: HTML, CSS, JavaScript, React (CDN)
+- Backend: Node.js, Express
+- Данные: JSON-файлы (goods.json, users.json)
+- Авторизация: JWT токены
+- Документация API: Swagger (/api-docs)
+
+## API
+
+| Метод | URL | Назначение |
+|-------|-----|------------|
+| GET | /api/goods | Все товары |
+| POST | /api/goods | Добавить товар |
+| PUT | /api/goods/:cat/:id | Переключить наличие |
+| DELETE | /api/goods/:cat/:id | Удалить товар |
+| POST | /api/register | Регистрация |
+| POST | /api/login | Вход |
+| GET | /api/user/:phone | Профиль |
+
+## Запуск
+
+npm install
+npm start
+
+Открыть http://localhost:3000/site.html
+Swagger: http://localhost:3000/api-docs
