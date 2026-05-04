@@ -15,43 +15,111 @@ function Card({ item, cat, btn, onBtn }) {
 }
 
 function App() {
+    var savedUser = localStorage.getItem('torzhishche_user');
+    var savedToken = localStorage.getItem('torzhishche_token');
+    var savedPage = localStorage.getItem('torzhishche_page');
+
     const [goods, setGoods] = useState({ provisions: [], tools: [], weapons: [] });
-    const [user, setUser] = useState(null);
-    const [page, setPage] = useState('home');
+    const [user, setUser] = useState(savedUser ? JSON.parse(savedUser) : null);
+    const [token, setToken] = useState(savedToken || '');
+    const [page, setPage] = useState(savedPage || 'home');
     const [msg, setMsg] = useState('');
 
-    const load = () => fetch(API + '/goods').then(r => r.json()).then(setGoods);
-    useEffect(() => { load(); }, []);
+    useEffect(function() {
+        localStorage.setItem('torzhishche_page', page);
+    }, [page]);
 
-    const register = (e) => {
+    const load = function() {
+        fetch(API + '/goods').then(function(r) { return r.json(); }).then(setGoods);
+    };
+    useEffect(function() { load(); }, []);
+
+    var headers = token ? { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
+
+    const doRegister = function(e) {
         e.preventDefault();
-        const fd = new FormData(e.target);
-        const name = fd.get('fullName'), phone = fd.get('phone');
-        if (!name || !phone) return setMsg('Заполни оба поля.');
+        var fd = new FormData(e.target);
+        var name = fd.get('fullName'), phone = fd.get('phone'), pass = fd.get('password');
+        if (!name || !phone || !pass) return setMsg('Заполни все поля.');
         fetch(API + '/register', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ fullName: name, phone })
-        }).then(r => r.json()).then(u => {
-            localStorage.setItem('torzhishche_user', JSON.stringify(u));
-            setUser(u); setMsg('Записан.'); setTimeout(() => setPage('profile'), 1000);
+            body: JSON.stringify({ fullName: name, phone: phone, password: pass })
+        }).then(function(r) { return r.json(); }).then(function(u) {
+            if (u.error) return setMsg(u.error);
+            setMsg('Записан. Теперь войди.');
+            setPage('login');
         });
     };
 
-    const addGood = (e) => {
+    const doLogin = function(e) {
         e.preventDefault();
-        const fd = new FormData(e.target);
-        const cat = fd.get('cat'), name = fd.get('name'), desc = fd.get('desc'), price = fd.get('price');
-        if (!name || !desc || !price) return setMsg('Заполни все поля.');
-        fetch(API + '/goods', {
+        var fd = new FormData(e.target);
+        var phone = fd.get('phone'), pass = fd.get('password');
+        if (!phone || !pass) return setMsg('Заполни все поля.');
+        fetch(API + '/login', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ category: cat, name, desc, price })
-        }).then(() => { setMsg('Товар добавлен.'); load(); });
+            body: JSON.stringify({ phone: phone, password: pass })
+        }).then(function(r) { return r.json(); }).then(function(data) {
+            if (data.error) return setMsg(data.error);
+            setToken(data.token);
+            setUser(data.user);
+            localStorage.setItem('torzhishche_token', data.token);
+            localStorage.setItem('torzhishche_user', JSON.stringify(data.user));
+            setMsg('Вошел. Статус: ' + data.user.status + '.');
+            setPage('profile');
+        });
     };
 
-    const toggle = (cat, i) => fetch(API + '/goods/' + cat + '/' + i, { method: 'PUT' }).then(load);
+    const doLogout = function() {
+        setToken('');
+        setUser(null);
+        localStorage.removeItem('torzhishche_token');
+        localStorage.removeItem('torzhishche_user');
+        setPage('home');
+    };
+
+    const addGood = function(e) {
+        e.preventDefault();
+        var fd = new FormData(e.target);
+        var cat = fd.get('cat'), name = fd.get('name'), desc = fd.get('desc'), price = fd.get('price');
+        if (!name || !desc || !price) return setMsg('Заполни все поля.');
+        fetch(API + '/goods', {
+            method: 'POST', headers: headers,
+            body: JSON.stringify({ category: cat, name: name, desc: desc, price: price })
+        }).then(function(r) { return r.json(); }).then(function() {
+            setMsg('Товар добавлен.');
+            load();
+            fetch(API + '/user/' + user.phone, { headers: headers })
+                .then(function(r) { return r.json(); })
+                .then(function(u) {
+                    setUser(u);
+                    localStorage.setItem('torzhishche_user', JSON.stringify(u));
+                });
+        });
+    };
+
+    const toggle = function(cat, i) {
+        fetch(API + '/goods/' + cat + '/' + i, { method: 'PUT', headers: headers }).then(load);
+    };
+
+    const remove = function(cat, i) {
+        fetch(API + '/goods/' + cat + '/' + i, { method: 'DELETE', headers: headers }).then(load);
+    };
 
     return (
         <div>
+            <nav className="nav" style={{marginBottom:15}}>
+                <span className="nav_logo" style={{cursor:'pointer'}} onClick={() => setPage('home')}>Торжище</span>
+                <div>
+                    <a href="#" className="cat_card" onClick={() => setPage('home')} style={{marginRight:5}}>Главная</a>
+                    <a href="#" className="cat_card" onClick={() => setPage('goods')} style={{marginRight:5}}>Товары</a>
+                    {!user && <a href="#" className="cat_card" onClick={() => setPage('register')} style={{marginRight:5}}>Регистрация</a>}
+                    {!user && <a href="#" className="cat_card" onClick={() => setPage('login')} style={{marginRight:5}}>Вход</a>}
+                    {user && <a href="#" className="cat_card" onClick={() => setPage('profile')} style={{marginRight:5}}>Профиль</a>}
+                    {user && <a href="#" className="cat_card" onClick={doLogout}>Выйти</a>}
+                </div>
+            </nav>
+
             {page === 'home' && (
                 <div>
                     <section className="banner"><h1>Добро пожаловать на Торжище</h1><p>Здесь крестьянин становится ремесленником, а медяк — золотым</p></section>
@@ -61,32 +129,51 @@ function App() {
                         <a href="#" className="cat_card" onClick={() => setPage('goods')}>Оружие</a>
                     </section>
                     <section className="goods_grid">
-                        {Object.keys(goods).map(c => goods[c].filter(i => i.available).map((i, idx) => <Card key={c+idx} item={i} cat={c} btn="В корзину" />))}
+                        {Object.keys(goods).map(function(c) {
+                            return goods[c].filter(function(i) { return i.available; }).map(function(i, idx) {
+                                return <Card key={c+idx} item={i} cat={c} btn="В корзину" />;
+                            });
+                        })}
                     </section>
                 </div>
             )}
 
             {page === 'goods' && (
                 <div>
-                    <a href="#" className="cat_card" onClick={() => setPage('home')} style={{marginBottom:15}}>← Назад</a>
-                    {Object.keys(goods).map(c => (
-                        <section className="goods_section" key={c}><h2>{L[c]}</h2>
-                            <div className="goods_grid">
-                                {goods[c].filter(i => i.available).map((i, idx) => <Card key={c+idx} item={i} cat={c} btn="В корзину" />)}
-                            </div>
-                        </section>
-                    ))}
+                    {Object.keys(goods).map(function(c) {
+                        return (
+                            <section className="goods_section" key={c}><h2>{L[c]}</h2>
+                                <div className="goods_grid">
+                                    {goods[c].filter(function(i) { return i.available; }).map(function(i, idx) {
+                                        return <Card key={c+idx} item={i} cat={c} btn="В корзину" />;
+                                    })}
+                                </div>
+                            </section>
+                        );
+                    })}
                 </div>
             )}
 
             {page === 'register' && (
                 <div className="form_block"><h2>Запись в гильдию</h2>
-                    <form onSubmit={register}>
+                    <form onSubmit={doRegister}>
                         <label>ФИО</label><input type="text" name="fullName" placeholder="Иван сын Петров" />
-                        <label>Номер телефона</label><input type="tel" name="phone" placeholder="+7..." />
+                        <label>Телефон</label><input type="tel" name="phone" placeholder="+7..." />
+                        <label>Пароль</label><input type="password" name="password" placeholder="Пароль" />
                         <button type="submit">Записаться</button>
                     </form>
-                    <p className="msg" style={{color: msg.includes('Заполни') ? '#8b1a1a' : '#2d5a1e'}}>{msg}</p>
+                    <p className="msg" style={{color: msg.includes('Заполни') || msg.includes('Уже') ? '#8b1a1a' : '#2d5a1e'}}>{msg}</p>
+                </div>
+            )}
+
+            {page === 'login' && (
+                <div className="form_block"><h2>Вход в гильдию</h2>
+                    <form onSubmit={doLogin}>
+                        <label>Телефон</label><input type="tel" name="phone" placeholder="+7..." />
+                        <label>Пароль</label><input type="password" name="password" placeholder="Пароль" />
+                        <button type="submit">Войти</button>
+                    </form>
+                    <p className="msg" style={{color: msg.includes('Неверный') || msg.includes('Заполни') ? '#8b1a1a' : '#2d5a1e'}}>{msg}</p>
                 </div>
             )}
 
@@ -110,14 +197,19 @@ function App() {
                     </div>
                     <section className="user_goods_section"><h2>Мои товары</h2>
                         <div className="goods_grid">
-                            {Object.keys(goods).map(c => goods[c].map((i, idx) => (
-                                <div className="good_card" key={c+idx}>
-                                    <h3>{i.name}</h3><span className="good_badge">{L[c]}</span><p>{i.desc}</p>
-                                    <div className="good_price">{i.price}</div>
-                                    <p style={{fontSize:12,color:i.available?'#2d5a1e':'#8b1a1a'}}>{i.available?'В наличии':'Отсутствует'}</p>
-                                    <button className="good_btn" onClick={() => toggle(c, idx)}>{i.available?'Снять с торга':'Вернуть на торг'}</button>
-                                </div>
-                            )))}
+                            {Object.keys(goods).map(function(c) {
+                                return goods[c].map(function(i, idx) {
+                                    return (
+                                        <div className="good_card" key={c+idx}>
+                                            <h3>{i.name}</h3><span className="good_badge">{L[c]}</span><p>{i.desc}</p>
+                                            <div className="good_price">{i.price}</div>
+                                            <p style={{fontSize:12,color:i.available?'#2d5a1e':'#8b1a1a'}}>{i.available?'В наличии':'Отсутствует'}</p>
+                                            <button className="good_btn" onClick={() => toggle(c, idx)}>{i.available?'Снять с торга':'Вернуть на торг'}</button>
+                                            <button className="good_btn" onClick={() => remove(c, idx)} style={{marginTop:4,background:'#6b2a2a',border:'1px solid #ad4a4a'}}>Удалить</button>
+                                        </div>
+                                    );
+                                });
+                            })}
                         </div>
                     </section>
                 </div>
