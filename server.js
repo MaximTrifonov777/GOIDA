@@ -14,16 +14,16 @@ var usersFile = path.join(__dirname, 'users.json');
 if (!fs.existsSync(goodsFile)) {
     fs.writeFileSync(goodsFile, JSON.stringify({
         provisions: [
-            { name: 'Копчёный окорок', desc: 'Свиной окорок на ольховой щепе.', price: '7 серебряных', available: true },
-            { name: 'Ржаной хлеб', desc: 'Буханка из печи.', price: '3 медяка', available: true }
+            { name: 'Копчёный окорок', desc: 'Свиной окорок на ольховой щепе.', price: '7 серебряных', available: true, phone: '' },
+            { name: 'Ржаной хлеб', desc: 'Буханка из печи.', price: '3 медяка', available: true, phone: '' }
         ],
         tools: [
-            { name: 'Топор плотника', desc: 'Лезвие доброй стали.', price: '10 золотых', available: true },
-            { name: 'Гусли звонкие', desc: 'Девять струн, корпус из клёна.', price: '14 золотых', available: true }
+            { name: 'Топор плотника', desc: 'Лезвие доброй стали.', price: '10 золотых', available: true, phone: '' },
+            { name: 'Гусли звонкие', desc: 'Девять струн, корпус из клёна.', price: '14 золотых', available: true, phone: '' }
         ],
         weapons: [
-            { name: 'Кинжал узкий', desc: 'Прячется в рукаве.', price: '18 золотых', available: true },
-            { name: 'Меч короткий', desc: 'Закалённая сталь.', price: '25 золотых', available: true }
+            { name: 'Кинжал узкий', desc: 'Прячется в рукаве.', price: '18 золотых', available: true, phone: '' },
+            { name: 'Меч короткий', desc: 'Закалённая сталь.', price: '25 золотых', available: true, phone: '' }
         ]
     }, null, 2));
 }
@@ -50,7 +50,13 @@ app.get('/api/goods', function(req, res) {
 app.post('/api/goods', auth, function(req, res) {
     var goods = JSON.parse(fs.readFileSync(goodsFile));
     var cat = req.body.category;
-    goods[cat].push({ name: req.body.name, desc: req.body.desc, price: req.body.price, available: true });
+    goods[cat].push({
+        name: req.body.name,
+        desc: req.body.desc,
+        price: req.body.price,
+        available: true,
+        phone: req.user.phone
+    });
     fs.writeFileSync(goodsFile, JSON.stringify(goods, null, 2));
 
     var users = JSON.parse(fs.readFileSync(usersFile));
@@ -65,14 +71,28 @@ app.post('/api/goods', auth, function(req, res) {
 
 app.put('/api/goods/:category/:index', auth, function(req, res) {
     var goods = JSON.parse(fs.readFileSync(goodsFile));
-    goods[req.params.category][parseInt(req.params.index)].available = !goods[req.params.category][parseInt(req.params.index)].available;
+    var cat = req.params.category;
+    var index = parseInt(req.params.index);
+    goods[cat][index].available = !goods[cat][index].available;
     fs.writeFileSync(goodsFile, JSON.stringify(goods, null, 2));
     res.json({ message: 'Статус изменён' });
 });
 
-app.delete('/api/goods/:category/:index', auth, function(req, res) {
+app.delete('/api/goods/:category/:name', auth, function(req, res) {
     var goods = JSON.parse(fs.readFileSync(goodsFile));
-    goods[req.params.category].splice(parseInt(req.params.index), 1);
+    var cat = req.params.category;
+    var name = decodeURIComponent(req.params.name);
+    var phone = req.user.phone;
+
+    var index = goods[cat].findIndex(function(item) {
+        return item.name === name && item.phone === phone;
+    });
+
+    if (index === -1) {
+        return res.status(404).json({ error: 'Товар не найден или не твой' });
+    }
+
+    goods[cat].splice(index, 1);
     fs.writeFileSync(goodsFile, JSON.stringify(goods, null, 2));
     res.json({ message: 'Товар удалён' });
 });

@@ -102,8 +102,11 @@ function App() {
         fetch(API + '/goods/' + cat + '/' + i, { method: 'PUT', headers: headers }).then(load);
     };
 
-    const remove = function(cat, i) {
-        fetch(API + '/goods/' + cat + '/' + i, { method: 'DELETE', headers: headers }).then(load);
+    const remove = function(cat, name) {
+        fetch(API + '/goods/' + cat + '/' + encodeURIComponent(name), {
+            method: 'DELETE',
+            headers: headers
+        }).then(load);
     };
 
     return (
@@ -198,14 +201,14 @@ function App() {
                     <section className="user_goods_section"><h2>Мои товары</h2>
                         <div className="goods_grid">
                             {Object.keys(goods).map(function(c) {
-                                return goods[c].map(function(i, idx) {
+                                return goods[c].filter(function(i) { return i.phone === user.phone; }).map(function(i, idx) {
                                     return (
                                         <div className="good_card" key={c+idx}>
                                             <h3>{i.name}</h3><span className="good_badge">{L[c]}</span><p>{i.desc}</p>
                                             <div className="good_price">{i.price}</div>
                                             <p style={{fontSize:12,color:i.available?'#2d5a1e':'#8b1a1a'}}>{i.available?'В наличии':'Отсутствует'}</p>
                                             <button className="good_btn" onClick={() => toggle(c, idx)}>{i.available?'Снять с торга':'Вернуть на торг'}</button>
-                                            <button className="good_btn" onClick={() => remove(c, idx)} style={{marginTop:4,background:'#6b2a2a',border:'1px solid #ad4a4a'}}>Удалить</button>
+                                            <button className="good_btn" onClick={() => remove(c, i.name)} style={{marginTop:4,background:'#6b2a2a',border:'1px solid #ad4a4a'}}>Удалить</button>
                                         </div>
                                     );
                                 });
